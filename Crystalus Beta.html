@@ -1,0 +1,1615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Crystalus Beta — The Pale Lycrux Legend</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="crystalus-extract/crystalus-beta-page/project/styles.css" />
+<style>
+/* ============================================================
+   CRYSTALUS BETA — CINEMATIC ENHANCEMENT LAYER
+   ============================================================ */
+
+/* --- Film grain overlay --- */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+}
+
+/* --- Topbar scroll state --- */
+.topbar { transition: background .3s, box-shadow .3s, border-color .3s; }
+.topbar.scrolled {
+  background: rgba(4,6,14,0.97) !important;
+  border-bottom-color: rgba(109,215,192,0.22) !important;
+  box-shadow: 0 4px 40px rgba(0,0,0,0.65), 0 1px 0 rgba(109,215,192,0.08);
+}
+
+/* ============================================================
+   NAV REDESIGN — Hamburger left · Logo centered · Pill right
+   Desktop nav links retired; drawer is universal on all widths.
+   ============================================================ */
+
+/* Three-column topbar: [1fr burger] [auto logo] [1fr pill] */
+.topbar {
+  display: grid !important;
+  grid-template-columns: 1fr auto 1fr !important;
+  align-items: center !important;
+  padding: 14px 28px !important;
+  gap: 0 !important;
+}
+
+/* Burger — always visible, left-anchored */
+.nav-burger {
+  display: inline-flex !important;
+  justify-self: start;
+}
+
+/* Logo — true page center, larger + breathing glow */
+.brand-mark {
+  justify-self: center !important;
+}
+.brand-mark .brand-logo {
+  height: 100px !important;
+  filter:
+    drop-shadow(0 0 18px rgba(111,217,255,0.55))
+    drop-shadow(0 0 40px rgba(196,124,255,0.35))
+    drop-shadow(0 0 80px rgba(111,217,255,0.15));
+  animation: logo-breathe 5s ease-in-out infinite;
+  transition: none !important;
+}
+
+/* Footer logo — larger */
+.footer-brand img {
+  height: 110px !important;
+  filter: drop-shadow(0 0 22px rgba(111,217,255,0.45)) drop-shadow(0 0 44px rgba(196,124,255,0.25)) !important;
+}
+
+/* Desktop nav links — replaced by drawer */
+.nav { display: none !important; }
+
+/* Pill — right-anchored */
+.coming-soon-pill {
+  justify-self: end;
+}
+
+/* Drawer — always renderable on every viewport */
+.mobile-nav { display: block !important; }
+
+/* --- Scroll-reveal base --- */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s cubic-bezier(.16,1,.3,1), transform 0.8s cubic-bezier(.16,1,.3,1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-d1 { transition-delay: 0.08s; }
+.reveal-d2 { transition-delay: 0.18s; }
+.reveal-d3 { transition-delay: 0.28s; }
+.reveal-d4 { transition-delay: 0.38s; }
+.reveal-d5 { transition-delay: 0.48s; }
+
+/* --- Hero logo showcase --- */
+.hero-logo-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 64px 32px 32px;
+}
+.hero-logo-display img {
+  width: auto;
+  max-width: 520px;
+  filter:
+    drop-shadow(0 0 28px rgba(111,217,255,0.60))
+    drop-shadow(0 0 64px rgba(196,124,255,0.40))
+    drop-shadow(0 0 120px rgba(111,217,255,0.20));
+  animation: logo-breathe 5s ease-in-out infinite;
+}
+@keyframes logo-breathe {
+  0%, 100% {
+    filter:
+      drop-shadow(0 0 28px rgba(111,217,255,0.60))
+      drop-shadow(0 0 64px rgba(196,124,255,0.40))
+      drop-shadow(0 0 120px rgba(111,217,255,0.20));
+  }
+  50% {
+    filter:
+      drop-shadow(0 0 38px rgba(111,217,255,0.80))
+      drop-shadow(0 0 88px rgba(196,124,255,0.55))
+      drop-shadow(0 0 160px rgba(111,217,255,0.28));
+  }
+}
+
+/* --- Hero cinematic backdrop --- */
+.hero { position: relative; overflow: hidden; }
+.hero-backdrop {
+  position: absolute; inset: 0; z-index: 0;
+  background-image: url('crystalus-extract/crystalus-beta-page/project/assets/worldview.png');
+  background-size: cover;
+  background-position: center 25%;
+  opacity: 0.07;
+  filter: saturate(0.6) blur(0.5px);
+  transform: scale(1.06);
+  will-change: transform;
+  pointer-events: none;
+}
+.hero > * { position: relative; z-index: 1; }
+
+/* Beta glyph radial pulse */
+.era--beta {
+  position: relative;
+}
+.era--beta::before {
+  content: '';
+  position: absolute;
+  inset: -80px;
+  background: radial-gradient(circle, rgba(196,124,255,0.20) 0%, transparent 65%);
+  z-index: -1;
+  pointer-events: none;
+  animation: beta-radial 4s ease-in-out infinite;
+}
+@keyframes beta-radial {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.08); }
+}
+
+/* --- Section glow canvases --- */
+#world::before, #exchange::before, #triumph::before, #houses::before, #book::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+#world    > .wrap,
+#exchange > .wrap,
+#triumph  > .wrap,
+#houses   > .wrap,
+#book     > .wrap { position: relative; z-index: 1; }
+
+#world::before    { background: radial-gradient(ellipse at 0% 50%, rgba(109,215,192,0.05), transparent 55%); }
+#exchange::before { background: radial-gradient(ellipse at 50% 30%, rgba(201,163,90,0.05), transparent 60%); }
+#triumph::before  { background: radial-gradient(ellipse at 50% 50%, rgba(201,163,90,0.06), transparent 60%); }
+#houses::before   { background: radial-gradient(ellipse at 50% 50%, rgba(201,163,90,0.04), transparent 65%); }
+#book::before     { background: radial-gradient(ellipse at 50% 30%, rgba(196,124,255,0.10), transparent 60%); }
+
+/* --- Enhanced world image hover --- */
+.world-image img { transition: filter .4s ease; }
+.world-image:hover img { filter: brightness(1.0) contrast(1.12); }
+
+/* --- Fix: exchange portrait plate --- */
+.exchange-plate--portrait { }
+.exchange-plate--portrait img {
+  width: 100%; height: auto; display: block;
+  filter: contrast(1.04) brightness(0.98);
+}
+
+/* --- Shard details full panel --- */
+.shard-details-wrap {
+  margin-top: 64px;
+  position: relative;
+  border: 1px solid rgba(111,217,255,0.22);
+  background: var(--void-2);
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.4),
+    0 30px 80px rgba(0,0,0,0.6),
+    0 0 60px rgba(111,217,255,0.07);
+}
+.shard-details-wrap::before,
+.shard-details-wrap::after {
+  content: '';
+  position: absolute;
+  width: 24px; height: 24px;
+  border: 1.5px solid var(--crystal);
+  pointer-events: none;
+  z-index: 1;
+}
+.shard-details-wrap::before { top: -2px; left: -2px; border-right: 0; border-bottom: 0; }
+.shard-details-wrap::after  { bottom: -2px; right: -2px; border-left: 0; border-top: 0; }
+.shard-details-wrap img { width: 100%; height: auto; display: block; filter: brightness(0.96) contrast(1.03); }
+.shard-details-tag {
+  position: absolute; top: 14px; left: 14px; z-index: 2;
+  font-family: var(--f-mono); font-size: 10px; letter-spacing: 0.32em;
+  color: var(--crystal-bright); background: rgba(4,6,14,0.88);
+  padding: 6px 12px; border: 1px solid rgba(111,217,255,0.35);
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   CHARACTERS SECTION (new)
+   ============================================================ */
+#characters {
+  padding: 96px 0 80px;
+  position: relative;
+}
+#characters::before {
+  content: '';
+  position: absolute;
+  inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse at 10% 0%,  rgba(111,217,255,0.05), transparent 50%),
+    radial-gradient(ellipse at 90% 100%, rgba(196,124,255,0.05), transparent 50%);
+}
+#characters > .wrap { position: relative; z-index: 1; }
+
+.chars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 56px;
+}
+.char-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(11,18,36,0.85), rgba(4,6,14,0.95));
+  cursor: default;
+  transition: border-color .4s ease, transform .4s ease;
+}
+.char-card:hover { border-color: var(--crystal); transform: translateY(-5px); }
+
+/* Corner brackets on hover */
+.char-card::before,
+.char-card::after {
+  content: '';
+  position: absolute;
+  width: 18px; height: 18px;
+  z-index: 3;
+  transition: opacity .3s;
+  opacity: 0;
+}
+.char-card::before { top: -1px; left: -1px; border-top: 1.5px solid var(--crystal); border-left: 1.5px solid var(--crystal); }
+.char-card::after  { bottom: -1px; right: -1px; border-bottom: 1.5px solid var(--crystal); border-right: 1.5px solid var(--crystal); }
+.char-card:hover::before,
+.char-card:hover::after { opacity: 1; }
+
+/* Image */
+.char-card-img-wrap {
+  position: relative;
+  overflow: hidden;
+  height: 480px;
+}
+.char-card-img-wrap::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 35%, rgba(4,6,14,0.97) 82%);
+  pointer-events: none;
+}
+.char-card-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  filter: brightness(0.80) contrast(1.08);
+  transition: filter .5s ease, transform .6s ease;
+}
+.char-card:hover .char-card-img {
+  filter: brightness(0.90) contrast(1.10);
+  transform: scale(1.03);
+}
+
+/* Info overlay */
+.char-info {
+  padding: 22px 22px 24px;
+  position: relative;
+  margin-top: -2px;
+}
+.char-name {
+  font-family: var(--f-display);
+  font-size: 22px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--bone);
+  margin: 0;
+}
+.char-alias {
+  font-family: var(--f-editorial);
+  font-style: italic;
+  font-size: 13.5px;
+  color: var(--gold-bright);
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+  display: block;
+}
+.char-quote {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-left: 2px solid rgba(111,217,255,0.40);
+  font-family: var(--f-editorial);
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--bone-dim);
+  background: rgba(111,217,255,0.03);
+}
+.char-stats {
+  margin-top: 14px;
+  display: flex; flex-direction: column; gap: 5px;
+}
+.char-stat {
+  display: flex; gap: 8px;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+}
+.char-stat .k { color: var(--mint); min-width: 90px; }
+.char-stat .v { color: var(--bone-2); }
+
+.char-affil {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  font-family: var(--f-ui);
+  font-size: 11px;
+  letter-spacing: 0.30em;
+  text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.char-affil::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 10px currentColor;
+  animation: pulse 2s ease-in-out infinite;
+}
+.char-affil.saona   { color: var(--mint-bright); }
+.char-affil.justice { color: var(--crystal-bright); }
+.char-affil.field   { color: var(--gold-bright); }
+
+/* ============================================================
+   TRIUMPH — arena + prediction slate additions
+   ============================================================ */
+.triumph-visuals {
+  margin-top: 64px;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+.triumph-panel {
+  position: relative;
+  border: 1px solid rgba(201,163,90,0.28);
+  background: var(--void-2);
+  padding: 10px;
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.4),
+    0 24px 60px rgba(0,0,0,0.55),
+    0 0 40px rgba(201,163,90,0.07);
+}
+.triumph-panel img { width: 100%; height: auto; display: block; }
+.triumph-panel .tp-label {
+  position: absolute;
+  left: 18px; bottom: 18px;
+  font-family: var(--f-mono); font-size: 9.5px; letter-spacing: 0.28em;
+  color: var(--gold); text-transform: uppercase;
+  background: rgba(4,6,14,0.85); padding: 5px 10px;
+  border: 1px solid rgba(201,163,90,0.28);
+}
+
+/* ============================================================
+   BOOK — enhanced cover display
+   ============================================================ */
+.book-covers-row {
+  display: flex;
+  gap: 28px;
+  justify-content: center;
+  align-items: flex-end;
+}
+.cover-front, .cover-back {
+  position: relative;
+  transition: transform .6s ease;
+}
+.cover-front img {
+  width: 100%;
+  max-width: 340px;
+  box-shadow:
+    0 30px 80px rgba(0,0,0,0.75),
+    0 0 60px rgba(111,217,255,0.20),
+    0 0 120px rgba(196,124,255,0.12);
+  transform: perspective(900px) rotateY(-7deg);
+  transition: transform .6s ease;
+}
+.cover-front img:hover { transform: perspective(900px) rotateY(0deg); }
+.cover-back img {
+  width: 100%;
+  max-width: 240px;
+  opacity: 0.80;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.65),
+    0 0 40px rgba(111,217,255,0.10);
+  transform: perspective(900px) rotateY(5deg);
+  transition: transform .6s ease, opacity .3s;
+  filter: brightness(0.90);
+}
+.cover-back img:hover { transform: perspective(900px) rotateY(0deg); opacity: 1; filter: brightness(1); }
+
+/* ============================================================
+   HOUSES — hover polish
+   ============================================================ */
+.house { transition: background .3s; }
+.house:hover { background: rgba(201,163,90,0.04); }
+.house:hover .crest { color: var(--gold-bright); filter: drop-shadow(0 0 14px rgba(201,163,90,0.65)); }
+.house:hover h4 { color: var(--gold-bright); }
+
+/* ============================================================
+   SECTION DIVIDER ORNAMENT
+   ============================================================ */
+.sec-div {
+  display: flex; align-items: center; justify-content: center;
+  gap: 18px;
+  max-width: 1400px; margin: 0 auto;
+  padding: 0 32px;
+  opacity: 0.35;
+}
+.sec-div .dl { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-dim), transparent); }
+.sec-div svg { width: 20px; height: 20px; color: var(--gold-dim); }
+
+/* ============================================================
+   EXCHANGE SYSTEM PANEL
+   ============================================================ */
+.exchange-system-panel {
+  margin-top: 80px;
+  border: 1px solid rgba(201,163,90,0.28);
+  background: linear-gradient(180deg, rgba(11,18,36,0.75), rgba(4,6,14,0.90));
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.5),
+    0 40px 100px rgba(0,0,0,0.6),
+    0 0 80px rgba(201,163,90,0.06);
+}
+.exchange-system-panel::before,
+.exchange-system-panel::after {
+  content: '';
+  position: absolute;
+  width: 28px; height: 28px;
+  pointer-events: none; z-index: 2;
+}
+.exchange-system-panel::before { top: -1px; left: -1px; border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); }
+.exchange-system-panel::after  { bottom: -1px; right: -1px; border-bottom: 2px solid rgba(214,90,85,0.7); border-right: 2px solid rgba(214,90,85,0.7); }
+
+.exchange-system-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 28px 32px 24px;
+  border-bottom: 1px solid rgba(201,163,90,0.15);
+}
+.exchange-system-header-right {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-end;
+}
+.exchange-system-tag {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 1px;
+}
+.exchange-system-tag--imperial {
+  color: var(--gold-bright);
+  background: rgba(201,163,90,0.10);
+  border: 1px solid rgba(201,163,90,0.35);
+}
+.exchange-system-tag--black {
+  color: var(--danger);
+  background: rgba(214,90,85,0.08);
+  border: 1px solid rgba(214,90,85,0.30);
+}
+
+.exchange-system-img-wrap {
+  position: relative;
+}
+.exchange-system-img-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: brightness(0.97) contrast(1.02);
+}
+.exchange-system-caption {
+  position: absolute;
+  bottom: 14px; left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--f-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.28em;
+  color: var(--bone-faint);
+  background: rgba(4,6,14,0.85);
+  padding: 5px 14px;
+  border: 1px solid rgba(201,163,90,0.18);
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.exchange-system-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.exchange-system-note {
+  padding: 18px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.exchange-system-note:first-child {
+  border-right: 1px solid rgba(255,255,255,0.05);
+}
+.exchange-system-note .k {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+.exchange-system-note .v {
+  font-family: var(--f-editorial);
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--bone-2);
+}
+.exchange-system-note--gold .k { color: var(--gold); }
+.exchange-system-note--danger .k { color: var(--danger); }
+
+@media (max-width: 768px) {
+  .exchange-system-header { flex-direction: column; align-items: flex-start; }
+  .exchange-system-header-right { align-items: flex-start; }
+  .exchange-system-footer { grid-template-columns: 1fr; }
+  .exchange-system-note:first-child { border-right: 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .exchange-system-caption { font-size: 8px; letter-spacing: 0.18em; white-space: normal; text-align: center; width: 90%; }
+}
+
+/* ============================================================
+   TIMELINE CENTERING — Beta locked to exact center (cols 5–7 of 11)
+   Cols 3–4 become a visual void between the archived past and the current era.
+   ============================================================ */
+@media (min-width: 781px) {
+  .era--beta              { grid-column: 5 / span 3 !important; }
+  .era-row > :nth-child(4) { grid-column: 8;  } /* Gamma   */
+  .era-row > :nth-child(5) { grid-column: 9;  } /* Delta   */
+  .era-row > :nth-child(6) { grid-column: 10; } /* Epsilon */
+  .era-row > :nth-child(7) { grid-column: 11; } /* Zeta    */
+  .era-row > :nth-child(8) { display: none;   } /* Eta — beyond the visible horizon */
+}
+
+/* ============================================================
+   RESPONSIVE ADDITIONS
+   ============================================================ */
+@media (max-width: 1100px) {
+  .chars-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .triumph-visuals { grid-template-columns: 1fr; }
+  .book-covers-row { flex-direction: column; align-items: center; }
+  .cover-front img { max-width: 280px; transform: none; }
+  .cover-back  img { max-width: 220px; transform: none; }
+  .char-card-img-wrap { height: 380px; }
+}
+@media (max-width: 700px) {
+  .chars-grid { grid-template-columns: 1fr; }
+  .char-card-img-wrap { height: 320px; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-field"></div>
+<div class="bg-stars"></div>
+<div class="bg-grid"></div>
+
+<!-- SVG sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-crystal" viewBox="0 0 24 40">
+      <path d="M12 0 L20 14 L12 40 L4 14 Z" fill="currentColor" opacity="0.85"/>
+      <path d="M12 0 L20 14 L12 18 L4 14 Z" fill="currentColor" opacity="1"/>
+      <path d="M12 18 L12 40" stroke="currentColor" stroke-width="0.8" opacity="0.6"/>
+    </symbol>
+    <symbol id="i-crest" viewBox="0 0 32 32">
+      <g fill="none" stroke="currentColor" stroke-width="1.4">
+        <path d="M16 2 L20 10 L16 18 L12 10 Z" fill="currentColor" fill-opacity="0.18"/>
+        <path d="M16 18 L16 30" /><path d="M9 22 L23 22" />
+        <circle cx="16" cy="16" r="13" opacity="0.4" />
+      </g>
+    </symbol>
+    <symbol id="i-imperial" viewBox="0 0 64 56">
+      <g fill="none" stroke="currentColor" stroke-width="1.4">
+        <path d="M32 2 L36 12 L32 22 L28 12 Z" fill="currentColor" fill-opacity="0.25"/>
+        <path d="M32 22 L32 54"/>
+        <path d="M14 30 Q22 28 30 30 Q26 36 22 38 Q18 36 14 30 Z" fill="currentColor" fill-opacity="0.15"/>
+        <path d="M50 30 Q42 28 34 30 Q38 36 42 38 Q46 36 50 30 Z" fill="currentColor" fill-opacity="0.15"/>
+        <circle cx="32" cy="40" r="3" /><path d="M22 46 L42 46"/>
+      </g>
+    </symbol>
+    <symbol id="i-saona" viewBox="0 0 64 64">
+      <g fill="none" stroke="currentColor" stroke-width="1.6">
+        <circle cx="32" cy="32" r="22" opacity="0.4"/>
+        <path d="M32 10 Q42 22 32 34 Q22 22 32 10 Z" fill="currentColor" fill-opacity="0.2"/>
+        <path d="M52 42 Q40 40 32 50 Q34 38 52 42 Z" fill="currentColor" fill-opacity="0.2"/>
+        <path d="M12 42 Q24 40 32 50 Q30 38 12 42 Z" fill="currentColor" fill-opacity="0.2"/>
+        <circle cx="32" cy="32" r="3" fill="currentColor"/>
+      </g>
+    </symbol>
+    <symbol id="i-ashlight" viewBox="0 0 64 64">
+      <g fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M32 6 L36 26 L56 32 L36 38 L32 58 L28 38 L8 32 L28 26 Z" fill="currentColor" fill-opacity="0.15"/>
+        <path d="M16 16 L22 22 M48 16 L42 22 M16 48 L22 42 M48 48 L42 42" />
+      </g>
+    </symbol>
+    <symbol id="i-broker" viewBox="0 0 64 64">
+      <g fill="none" stroke="currentColor" stroke-width="1.6">
+        <circle cx="24" cy="32" r="14" opacity="0.7"/>
+        <circle cx="40" cy="32" r="14" opacity="0.7"/>
+        <path d="M32 12 L32 52" opacity="0.6"/>
+        <path d="M18 22 L46 42" opacity="0.4"/>
+      </g>
+    </symbol>
+    <symbol id="i-orn" viewBox="0 0 24 24">
+      <g fill="currentColor">
+        <path d="M12 2 L14 10 L22 12 L14 14 L12 22 L10 14 L2 12 L10 10 Z" opacity="0.85"/>
+      </g>
+    </symbol>
+    <symbol id="h-morvayne" viewBox="0 0 56 56">
+      <g fill="none" stroke="currentColor" stroke-width="1.4">
+        <path d="M28 8 L28 22"/><circle cx="28" cy="32" r="14"/>
+        <path d="M14 32 Q28 24 42 32" /><path d="M22 38 L34 38" />
+        <path d="M28 4 L31 8 L28 12 L25 8 Z" fill="currentColor" fill-opacity="0.4"/>
+      </g>
+    </symbol>
+    <symbol id="h-mavendor" viewBox="0 0 56 56">
+      <g fill="none" stroke="currentColor" stroke-width="1.4">
+        <path d="M16 48 L28 8 L40 48 Z" fill="currentColor" fill-opacity="0.10"/>
+        <path d="M28 8 L28 48"/>
+        <circle cx="28" cy="20" r="3" fill="currentColor"/>
+      </g>
+    </symbol>
+    <symbol id="h-asterline" viewBox="0 0 56 56">
+      <g fill="none" stroke="currentColor" stroke-width="1.4">
+        <circle cx="28" cy="28" r="18" />
+        <path d="M28 10 L28 46 M10 28 L46 28 M15 15 L41 41 M41 15 L15 41" opacity="0.55"/>
+        <circle cx="28" cy="28" r="4" fill="currentColor" />
+      </g>
+    </symbol>
+    <symbol id="h-varric" viewBox="0 0 56 56">
+      <g fill="none" stroke="currentColor" stroke-width="1.4">
+        <path d="M28 6 L46 22 L46 40 L28 50 L10 40 L10 22 Z" fill="currentColor" fill-opacity="0.10"/>
+        <path d="M28 18 L28 38 M18 28 L38 28" />
+        <path d="M22 22 L34 34 M34 22 L22 34" opacity="0.5"/>
+      </g>
+    </symbol>
+    <symbol id="h-sablecross" viewBox="0 0 56 56">
+      <g fill="none" stroke="currentColor" stroke-width="1.4">
+        <path d="M12 12 L44 44 M44 12 L12 44" />
+        <path d="M28 4 L32 14 L28 24 L24 14 Z" fill="currentColor" fill-opacity="0.4"/>
+        <circle cx="28" cy="40" r="6"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ===== TOP NAV ===== -->
+<header class="topbar" id="topbar">
+  <button class="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
+    <span></span><span></span><span></span>
+  </button>
+  <a class="brand-mark" href="#top">
+    <img class="brand-logo" src="crystalus-extract/crystalus-beta-page/project/assets/logo-transparent.png" alt="Crystalus Beta — The Pale Lycrux Legend" />
+  </a>
+  <nav class="nav" aria-label="Primary">
+    <a href="#world">The World</a>
+    <a href="#doctrines">Doctrines</a>
+    <a href="#exchange">Exchange</a>
+    <a href="#shards">Shards</a>
+    <a href="#bestiary">Bestiary</a>
+    <a href="#characters">Characters</a>
+    <a href="#mpilots">M-Pilots</a>
+    <a href="#triumph">Triumph</a>
+    <a href="#houses">Houses</a>
+    <a href="#book">The Book</a>
+  </nav>
+  <span class="coming-soon-pill"><span class="dot"></span>Coming Soon</span>
+  <div class="mobile-nav" id="mobile-nav" aria-hidden="true">
+    <div class="mobile-nav-inner">
+      <div class="mobile-nav-eyebrow">// NAVIGATE THE ARCHIVE</div>
+      <a href="#world">The World</a>
+      <a href="#doctrines">Doctrines</a>
+      <a href="#exchange">Exchange</a>
+      <a href="#shards">Shards</a>
+      <a href="#bestiary">Bestiary</a>
+      <a href="#characters">Characters</a>
+      <a href="#mpilots">M-Pilots</a>
+      <a href="#triumph">Triumph</a>
+      <a href="#houses">Houses</a>
+      <a href="#book">The Book</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ===== HERO / TIMELINE ===== -->
+<section class="hero" id="timeline">
+  <div class="hero-backdrop" aria-hidden="true"></div>
+
+  <div class="hero-logo-display">
+    <img src="crystalus-extract/crystalus-beta-page/project/assets/logo-transparent.png" alt="Crystalus Beta — The Pale Lycrux Legend" />
+  </div>
+
+  <div class="hero-eyebrow-row">
+    <span>ARCHIVE TIER · CIVIC EPOCH MARKER</span>
+    <span class="center">— THE CRYSTALUS TIMELINE —</span>
+    <span>CLASSIFICATION · OPEN</span>
+  </div>
+
+  <div class="timeline">
+    <div class="era-row">
+      <div class="era era--past era--others">
+        <span class="era-num">i</span>
+        <div class="crystal-node"><svg><use href="#i-crystal"/></svg></div>
+        <div class="era-name">Origins</div>
+        <div class="era-status">Archived</div>
+      </div>
+      <div class="era era--past era--others">
+        <span class="era-num">α</span>
+        <div class="crystal-node"><svg><use href="#i-crystal"/></svg></div>
+        <div class="era-name">Alpha</div>
+        <div class="era-status">Established</div>
+      </div>
+      <div class="era era--beta">
+        <div class="beta-eyebrow"><span class="dash"></span>BOOK ONE<span class="dash"></span></div>
+        <div class="beta-glyph-row">
+          <span class="era-num--beta">β</span>
+          <div class="crystal-node crystal-node--beta">
+            <svg viewBox="0 0 24 40"><use href="#i-crystal"/></svg>
+          </div>
+        </div>
+        <div class="era-name era-name--beta">Beta</div>
+        <div class="era-status era-status--beta">Current Era · Unstable · CL-001</div>
+        <div class="you-are-here">You Are Here</div>
+      </div>
+      <div class="era era--others era--future-1">
+        <span class="era-num">γ</span>
+        <div class="crystal-node"><svg><use href="#i-crystal"/></svg></div>
+        <div class="era-name">Gamma</div>
+        <div class="era-status">Forthcoming</div>
+      </div>
+      <div class="era era--others era--future-2">
+        <span class="era-num">δ</span>
+        <div class="crystal-node"><svg><use href="#i-crystal"/></svg></div>
+        <div class="era-name">Delta</div>
+        <div class="era-status">Charted</div>
+      </div>
+      <div class="era era--others era--future-3">
+        <span class="era-num">ε</span>
+        <div class="crystal-node"><svg><use href="#i-crystal"/></svg></div>
+        <div class="era-name">Epsilon</div>
+        <div class="era-status">Sealed</div>
+      </div>
+      <div class="era era--others era--future-4">
+        <span class="era-num">ζ</span>
+        <div class="crystal-node"><svg><use href="#i-crystal"/></svg></div>
+        <div class="era-name">Zeta</div>
+        <div class="era-status">—</div>
+      </div>
+      <div class="era era--others era--future-5">
+        <span class="era-num">η</span>
+        <div class="crystal-node"><svg><use href="#i-crystal"/></svg></div>
+        <div class="era-name">Eta</div>
+        <div class="era-status">—</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-summary">
+    <div class="left reveal">
+      <div class="kicker">Book One of the Crystalus Cycle</div>
+      <h1>The world did not break all at once. <b>It hardened.</b></h1>
+      <p class="quote">Resonance is rising. The grid is straining. And something buried deep beneath the capital has begun to listen.</p>
+    </div>
+    <div class="center reveal reveal-d2">
+      <div class="ornament">
+        <span class="line"></span><svg><use href="#i-orn"/></svg><span class="line"></span>
+      </div>
+      <p class="quote" style="max-width: 360px;">One capital. Four doctrines. A silence the Empire mistook for safety.</p>
+      <div class="cta-row">
+        <a class="cta-pill" href="#book">Coming Soon</a>
+        <a class="btn-ghost proj-link" href="#doctrines">Enter the Archive</a>
+      </div>
+    </div>
+    <div class="right reveal reveal-d4">
+      <div class="kicker">A novel by JP Frost</div>
+      <h1>The system was never built to last. <b>And when it breaks—</b></h1>
+      <p class="quote">— it will not be quietly. The Pale Lycrux is not a larger rupture. It is a foundational one. It is intelligent. It is patient. It has begun to remember.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION DIVIDER ===== -->
+<div class="sec-div"><div class="dl"></div><svg><use href="#i-orn"/></svg><div class="dl"></div></div>
+
+<!-- ===== THE WORLD ===== -->
+<section id="world" class="world-section">
+  <div class="wrap">
+    <div class="world-grid">
+      <div class="world-image corner-frame reveal">
+        <span class="corner-bl"></span><span class="corner-br"></span>
+        <img src="crystalus-extract/crystalus-beta-page/project/assets/worldview.png" alt="Meridian — the capital of the Empire, seen from the high passes" />
+      </div>
+      <div class="world-copy reveal reveal-d2">
+        <div class="eyebrow">I. The World</div>
+        <h2 class="section-title">Meridian, <em>and what surrounds it.</em></h2>
+        <div class="ornament"><span class="line"></span><svg><use href="#i-orn"/></svg><span class="line"></span></div>
+        <div class="body-text">
+          <p>Beyond the walls of Meridian, the land shifts with the seasons — frozen peaks where something ancient stirs beneath the snow, burning badlands where survival is measured in water and steel, and forests that remember a time before the Empire drew its lines.</p>
+          <p>At the center stands <strong style="color:var(--gold-bright)">Meridian</strong> — a city of order, power, and quiet control. Its rails carry more than people. Its walls hold back more than chaos.</p>
+        </div>
+        <div class="world-quote-block">
+          But the balance is thinning. <strong>Resonance is rising. The grid is straining.</strong> And something buried deep beneath the capital has begun to listen.
+        </div>
+        <div class="stat-row">
+          <div class="stat">
+            <div class="label">CITY OF</div><div class="val">ORDER</div>
+            <div class="sub">// HARMONY DOCTRINE</div>
+          </div>
+          <div class="stat">
+            <div class="label">ECONOMY</div><div class="val">MINT GLASS</div>
+            <div class="sub">// FIVE CURRENCY TIERS</div>
+          </div>
+          <div class="stat">
+            <div class="label">THREAT INDEX</div><div class="val">K-4.0+</div>
+            <div class="sub">// RISING</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION DIVIDER ===== -->
+<div class="sec-div"><div class="dl"></div><svg><use href="#i-orn"/></svg><div class="dl"></div></div>
+
+<!-- ===== DOCTRINES ===== -->
+<section id="doctrines">
+  <div class="wrap">
+    <div class="doctrines-head reveal">
+      <div class="eyebrow gold">II. The Four Doctrines</div>
+      <h2 class="section-title">Four readings <em>of the same truth.</em></h2>
+      <div class="ornament"><span class="line"></span><svg><use href="#i-orn"/></svg><span class="line"></span></div>
+      <p class="lede" style="margin: 24px auto 0;">
+        Every faction believes it stands at the center of the world. Every faction is wrong in a different and beautiful way.
+        These are the four readings of resonance, order, and the slow approach of the Pale Lycrux.
+      </p>
+    </div>
+
+    <div class="doctrines-grid">
+      <article class="doctrine empire reveal">
+        <div class="sigil"><svg><use href="#i-imperial"/></svg></div>
+        <div class="roman">I · Imperial Doctrine</div>
+        <h3>Harmony of the Empire</h3>
+        <p class="tenet">"Order is the only mercy. Contain first. Identify later."</p>
+        <p>Meridian's official creed. The Imperial doctrine stands for <strong style="color:var(--gold-bright);">order, continuity, and civic harmony</strong> — a managed peace held in place by the Houses, the Rail Guard, and Harmony oversight. Discipline is a virtue. The grid is a covenant. Citizens are safe because the Empire is watching.</p>
+        <p class="redacted-line"><span>// Further reading sealed under Harmony directive.</span></p>
+      </article>
+      <article class="doctrine saona reveal reveal-d2">
+        <div class="sigil"><svg><use href="#i-saona"/></svg></div>
+        <div class="roman">II · Saona Doctrine</div>
+        <h3>The Saona — The Vow of Resonance</h3>
+        <p class="tenet">"Listen first. Strike last. The world remembers what we do in silence."</p>
+        <p>A scattered order of scholar-monks bound by the Pilgrimage Vow. Saona doctrine stands for <strong style="color:var(--bone);">restraint, balance, and the old harmonics</strong> — the discipline of sensing resonance the way the Ancients did, before the Empire drew its grid. They train to protect, to steady, and to keep what is rising beneath the world from waking too soon.</p>
+        <p class="redacted-line"><span>// Saona canon is pre-Imperial. Records partial.</span></p>
+      </article>
+      <article class="doctrine ashlight reveal reveal-d1">
+        <div class="sigil"><svg><use href="#i-ashlight"/></svg></div>
+        <div class="roman">III · Ashlight Doctrine</div>
+        <h3>Ashlight — The Burning Answer</h3>
+        <p class="tenet">"A throne held by silence is a throne already falling."</p>
+        <p>A doctrine of accelerated collapse. Ashlight stands for <strong style="color:var(--danger);">revolt, exposure, and the end of the Houses' monopoly</strong> — the conviction that the Empire's order is power dressed as safety. Their factions disagree on tactics; they agree the grid itself is the disease. Spectacle is their weapon. Panic is their proof.</p>
+        <p class="redacted-line"><span>// Marked Harmony Black. Existence officially denied.</span></p>
+      </article>
+      <article class="doctrine broker reveal reveal-d3">
+        <div class="sigil"><svg><use href="#i-broker"/></svg></div>
+        <div class="roman">IV · Broker Doctrine</div>
+        <h3>The Broker — Leverage as Law</h3>
+        <p class="tenet">"Everything has a price. Faith is just a slow currency."</p>
+        <p>Not a faith — a market. The Broker doctrine stands for <strong style="color:var(--bone);">leverage, neutrality, and the law of exchange</strong>. They price what others worship: resonance, secrets, allegiance, silence. They do not need to understand the Crystalus to profit from it. The only truth is that someone, somewhere, will pay — and the Broker will know first.</p>
+        <p class="redacted-line"><span>// Sells to Empire, Saona, and Ashlight alike.</span></p>
+      </article>
+    </div>
+
+    <div class="march-blood reveal">
+      <div>
+        <div class="label">// THE MARCH LINEAGE</div>
+        <h4 style="margin: 8px 0 0;">A bloodline that shouldn't exist.</h4>
+      </div>
+      <div>
+        <p>The Empire keeps a quiet file on the March line. The Saona keep a different one. Neither will say what they have found. What is recorded in both — and what is not — remains a matter for the books.</p>
+        <div class="stat-mini">// RECORD: SEALED · ACCESS: HARMONY OVERSIGHT ONLY</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION DIVIDER ===== -->
+<div class="sec-div"><div class="dl"></div><svg><use href="#i-orn"/></svg><div class="dl"></div></div>
+
+<!-- ===== EXCHANGE SYSTEMS ===== -->
+<section id="exchange">
+  <div class="wrap">
+    <div class="doctrines-head reveal">
+      <div class="eyebrow crystal">III. Two Economies, One Empire</div>
+      <h2 class="section-title">The Exchange <em>— refined and raw.</em></h2>
+      <div class="ornament"><span class="line"></span><svg><use href="#i-orn"/></svg><span class="line"></span></div>
+      <p class="lede" style="margin: 24px auto 0;">
+        Behind every empire is a ledger. Meridian's runs on resonance — refined Mint Glass currency, sealed and certified inside the capital, set against the raw, unstable shard barter of the outer villages. Both systems trade in the same material. Only one is allowed to call it currency.
+      </p>
+    </div>
+
+    <div class="exchange-block reveal">
+      <div class="exchange-copy">
+        <div class="eyebrow gold">// Capital Systems · Meridian</div>
+        <h3 class="exchange-title">Mint Glass Economy <em>— controlled flow.</em></h3>
+        <p class="body-text" style="margin-top: 18px;">
+          Inside the walls of Meridian, value is sealed. Mint Glass is the only sanctioned currency — refined, harmonically imprinted, and stamped with mint authority. Five standard units run the city: <strong style="color:var(--mint-bright);">Chip · Silver · Facet · Sharding · Piece.</strong>
+        </p>
+        <p class="body-text">Movement is permission. The Lantern Gate sorts every traveler by clearance tier; verification interfaces test resonance clarity, weight, and seal integrity. No barter. No exceptions.</p>
+        <div class="signal-grid" style="margin-top: 22px;">
+          <div class="signal"><div class="k">// AUTHORITY</div><div class="v">MERIDIAN MINT</div></div>
+          <div class="signal"><div class="k">// UNITS</div><div class="v">FIVE TIERS</div></div>
+          <div class="signal"><div class="k">// SEAL</div><div class="v">HARMONIC</div></div>
+        </div>
+        <div class="exchange-tags">
+          <span>LANTERN GATE</span><span>SEAL RINGS</span><span>CLEARANCE I–III</span><span>RESONANCE AUDIT</span>
+        </div>
+      </div>
+      <div class="exchange-plate exchange-plate--portrait reveal reveal-d2">
+        <img src="crystalus-extract/crystalus-beta-page/project/assets/capital-systems.png" alt="Capital Systems — Mint Glass Economy (Meridian Capital)" />
+        <span class="plate-id">CS-MG-772.31-A · CIVIL SYSTEMS</span>
+      </div>
+    </div>
+
+    <div class="exchange-block exchange-block--reverse">
+      <div class="exchange-plate reveal">
+        <img src="crystalus-extract/crystalus-beta-page/project/assets/village-systems.png" alt="Village Systems — Raw Crystalus Economy (Outer Villages)" />
+        <span class="plate-id">CS-PER-772.31-B · PERIPHERAL SYSTEMS</span>
+      </div>
+      <div class="exchange-copy reveal reveal-d2">
+        <div class="eyebrow">// Village Systems · Outer Reach</div>
+        <h3 class="exchange-title">Raw Crystalus Economy <em>— unrefined, unstable, unstandardized.</em></h3>
+        <p class="body-text" style="margin-top: 18px;">Beyond the rail line, the Empire's stamp loses its weight. Outer villages trade raw Crystalus shards directly — weighed against calibrated stones, priced by clarity and resonance, judged by trust and immediate need. There are no fixed prices. There are no sanctioned mints.</p>
+        <p class="body-text">Shards are not just money out here. They are <strong style="color:var(--bone);">light</strong>, <strong style="color:var(--bone);">heat</strong>, <strong style="color:var(--bone);">fuel</strong>, <strong style="color:var(--bone);">tools</strong>, and clean water. The Empire calls it unregulated exchange. The villages call it survival.</p>
+        <div class="signal-grid" style="margin-top: 22px;">
+          <div class="signal"><div class="k">// SCALE</div><div class="v">WEIGHT-STONES</div></div>
+          <div class="signal"><div class="k">// PRICING</div><div class="v">VARIABLE</div></div>
+          <div class="signal"><div class="k">// RISK</div><div class="v">SHATTER · FLARE</div></div>
+        </div>
+        <div class="exchange-tags">
+          <span>DIRECT BARTER</span><span>HEAT CRADLE</span><span>FORGING</span><span>WATER PURIFICATION</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exchange-compare reveal">
+      <div>
+        <div class="col-label">// CAPITAL</div>
+        <div class="col-val">Refined Mint Glass</div>
+        <div class="col-sub">Sealed · standardized · clearance-bound</div>
+      </div>
+      <div class="vs"><span>VS</span></div>
+      <div>
+        <div class="col-label">// VILLAGE</div>
+        <div class="col-val">Raw Crystalus Shard</div>
+        <div class="col-sub">Weighed · unstable · trust-bound</div>
+      </div>
+    </div>
+
+    <!-- Imperial Exchange System full breakdown -->
+    <div class="exchange-system-panel reveal">
+      <div class="exchange-system-header">
+        <div class="exchange-system-header-left">
+          <div class="eyebrow gold">// IMPERIAL EXCHANGE SYSTEM · FULL BREAKDOWN</div>
+          <h3 class="exchange-title" style="font-size: clamp(22px, 2.4vw, 32px); margin-top: 8px;">
+            Official Exchange <em>vs.</em> Black Market
+          </h3>
+        </div>
+        <div class="exchange-system-header-right">
+          <div class="exchange-system-tag exchange-system-tag--imperial">OFFICIAL · SECTOR 25 · LANTERN WALK</div>
+          <div class="exchange-system-tag exchange-system-tag--black">BLACK MARKET · SHADOW MARKETS · LOWER SECTORS</div>
+        </div>
+      </div>
+      <div class="exchange-system-img-wrap">
+        <img src="crystalus-extract/crystalus-beta-page/project/assets/exchange-system.png"
+             alt="Imperial Exchange System — Official Imperial Exchange vs Black Market Exchange full breakdown" />
+        <span class="exchange-system-caption">
+          ARCHIVE REF: IES-772.31 · CURRENCY, VERIFICATION, TRUST · HARMONY OVERSIGHT RESTRICTED
+        </span>
+      </div>
+      <div class="exchange-system-footer">
+        <div class="exchange-system-note exchange-system-note--gold">
+          <span class="k">// OFFICIAL DOCTRINE</span>
+          <span class="v">"The system maintains order. Control of Enerbi is control of economy."</span>
+        </div>
+        <div class="exchange-system-note exchange-system-note--danger">
+          <span class="k">// BLACK MARKET REALITY</span>
+          <span class="v">"Any bad token can mean debt, betrayal, or death."</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== SECTION DIVIDER ===== -->
+<div class="sec-div"><div class="dl"></div><svg><use href="#i-orn"/></svg><div class="dl"></div></div>
+
+<!-- ===== SHARDS / HARNESS ===== -->
+<section id="shards">
+  <div class="wrap">
+    <div class="doctrines-head reveal">
+      <div class="eyebrow">IV. Crystalus Shards</div>
+      <h2 class="section-title">Born from element. <em>Imprinted by nature.</em></h2>
+      <div class="ornament"><span class="line"></span><svg><use href="#i-orn"/></svg><span class="line"></span></div>
+      <p class="lede" style="margin: 24px auto 0;">
+        A Crystalus shard is not a tool. It is a fragment of negotiated Mako — alive with resonance, alive with memory.
+        It chooses its bearer. The harness does not control it. The harness ensures the bearer does not die by it.
+      </p>
+    </div>
+
+    <div class="shards-grid">
+      <div class="shard-card reveal reveal-d1" style="--col: #6fd9ff;">
+        <div class="shard-vis"><img src="crystalus-extract/crystalus-beta-page/project/assets/shard-ice.png" alt="Ice Crystalus Shard" /></div>
+        <h4>Ice</h4><div class="hue">HUE · PALE BLUE</div>
+        <p>Formed in glacial depths where Mako runs slow and precise. Resonates with clarity, control, endurance.</p>
+      </div>
+      <div class="shard-card reveal reveal-d2" style="--col: #79d36b;">
+        <div class="shard-vis"><img src="crystalus-extract/crystalus-beta-page/project/assets/shard-earth.png" alt="Earth Crystalus Shard" /></div>
+        <h4>Earth</h4><div class="hue">HUE · EARTH GREEN</div>
+        <p>Born of ancient stone older than memory. Stability, fortitude, unwavering defense.</p>
+      </div>
+      <div class="shard-card reveal reveal-d3" style="--col: #ff7a4a;">
+        <div class="shard-vis"><img src="crystalus-extract/crystalus-beta-page/project/assets/shard-magma.png" alt="Magma Crystalus Shard" /></div>
+        <h4>Magma</h4><div class="hue">HUE · CRIMSON ORANGE</div>
+        <p>Forged where the earth bleeds fire. Relentless energy. Offensive bias. Burns the bearer almost as fast as the foe.</p>
+      </div>
+      <div class="shard-card reveal reveal-d4" style="--col: #e8b85a;">
+        <div class="shard-vis"><img src="crystalus-extract/crystalus-beta-page/project/assets/shard-sand.png" alt="Sand Crystalus Shard" /></div>
+        <h4>Sand</h4><div class="hue">HUE · DUNE GOLD</div>
+        <p>Shaped by endless winds. Adaptability, speed, heightened perception.</p>
+      </div>
+      <div class="shard-card shard-card--refined reveal reveal-d5" style="--col: #6dd7c0;">
+        <div class="shard-vis"><img src="crystalus-extract/crystalus-beta-page/project/assets/shard-mint-glass.png" alt="Mint Glass — refined Empire fragment" /></div>
+        <h4>Mint&nbsp;Glass</h4><div class="hue">REFINED · CIVIC GRADE</div>
+        <p>Empire-refined fragments — resonance deliberately flattened for safe handling. Stamped small, sealed, circulated as currency.</p>
+      </div>
+    </div>
+
+    <!-- Full shard reference panel -->
+    <div class="shard-details-wrap reveal">
+      <div class="shard-details-tag">CHRYSALIS SHARD REFERENCE · FULL CHART</div>
+      <img src="crystalus-extract/crystalus-beta-page/project/assets/shard-details.png" alt="Crystalus Shard Reference — full field chart including carry methods and activation protocol" />
+    </div>
+
+    <!-- Harness feature -->
+    <div class="harness-block">
+      <div class="harness-image reveal">
+        <img src="crystalus-extract/crystalus-beta-page/project/assets/harness.png" alt="Crystalus Harness — Imperial Standard Issue" />
+      </div>
+      <div class="reveal reveal-d2">
+        <div class="eyebrow">// Containment Engineering</div>
+        <h2 class="section-title" style="font-size: clamp(28px, 3.5vw, 44px);">The Crystalus Harness <em>— Imperial Standard Issue.</em></h2>
+        <p class="body-text" style="margin-top: 20px;">
+          A containment harness engineered to safely house a Crystalus Shard. The lock-seal frame maintains integrity under extreme stress; Mint Glass windows allow resonance to flow while preventing direct contact. When two fingers touch the forehead and intent aligns, the harness locks to the skin and the shard seats into place.
+        </p>
+        <p class="body-text">The Crystalus synchronizes with neural resonance, opening Mako pathways and initiating <strong style="color:var(--mint-bright);">Force Transform.</strong></p>
+        <div class="signal-grid">
+          <div class="signal"><div class="k">// MODEL</div><div class="v">CAELEUM-VX7</div></div>
+          <div class="signal"><div class="k">// CLASS</div><div class="v">IMPERIAL STD</div></div>
+          <div class="signal"><div class="k">// SEAL</div><div class="v">PERMANENT</div></div>
+        </div>
+        <p class="body-text" style="color: var(--danger); font-family: var(--f-ui); letter-spacing: 0.18em; font-size: 13px; text-transform: uppercase; margin-top: 14px;">
+          ⚠ Risk of misuse: resonance bleed, corruption, or Lycrux conversion. Never expose. Never touch.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION DIVIDER ===== -->
+<div class="sec-div"><div class="dl"></div><svg><use href="#i-orn"/></svg><div class="dl"></div></div>
+
+<!-- ===== BESTIARY ===== -->
+<section id="bestiary">
+  <div class="wrap">
+    <div class="doctrines-head reveal">
+      <div class="eyebrow danger">V. Field Bestiary — Lycrux Classifications</div>
+      <h2 class="section-title">Children of the <em>fracture.</em></h2>
+      <div class="ornament"><span class="line"></span><svg><use href="#i-orn"/></svg><span class="line"></span></div>
+      <p class="lede" style="margin: 24px auto 0;">
+        Beasts whose lineage was rewritten by the scattering. What began as appetite became inheritance — generations fed
+        on stray fragments until the shard, the bone, and the hunger could no longer be told apart. They do not wield Mako.
+        They <em>are</em> it, badly.
+      </p>
+    </div>
+
+    <div class="bestiary-block">
+      <div class="bestiary-figure reveal">
+        <img src="crystalus-extract/crystalus-beta-page/project/assets/beasts.png" alt="Lycrux Bestiary — Field Classifications" />
+        <div class="bestiary-figure-caption">FIELD CLASSIFICATIONS · PARTIAL</div>
+      </div>
+      <div class="bestiary-side reveal reveal-d2">
+        <div class="eyebrow danger">// OBSERVATION PROTOCOL</div>
+        <h3 class="bestiary-h3">Confirmed strains. <em>More expected.</em></h3>
+        <p class="body-text" style="margin-top: 14px;">
+          Each strain conforms to the terrain that shaped its parent line; each carries a different signature on the K-Index.
+          The chart below logs what field cells have brought back alive. The unconfirmed ones — the names whispered after
+          a corridor closes — are catalogued in the book.
+        </p>
+        <div class="bestiary-callout">
+          <div class="bestiary-callout-eyebrow">// K-INDEX ADVISORY</div>
+          <p>Sustained K-Index elevation in a localized basin is the single condition every Anomaly Cell is trained to fear. Spikes that hold past the response window do not summon a Lycrux — they <strong style="color: var(--danger);">wake one</strong>.</p>
+          <p style="margin-top: 10px;">Something further down the harmonic stack stirs in answer. We do not name it on civic frequencies. We log the reading. We close the corridor. We pretend the dormancy was always the default.</p>
+        </div>
+        <div class="signal-grid bestiary-stats">
+          <div class="signal"><div class="k">// CONFIRMED STRAINS</div><div class="v">LOGGED</div></div>
+          <div class="signal"><div class="k">// UNCONFIRMED</div><div class="v">SEE BOOK</div></div>
+          <div class="signal"><div class="k">// DIET</div><div class="v">FRAGMENTED MAKO</div></div>
+          <div class="signal"><div class="k">// HANDLING</div><div class="v">DO NOT ENGAGE</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION DIVIDER ===== -->
+<div class="sec-div"><div class="dl"></div><svg><use href="#i-orn"/></svg><div class="dl"></div></div>
+
+<!-- ===== CHARACTERS (new) ===== -->
+<section id="characters">
+  <div class="wrap">
+    <div class="doctrines-head reveal">
+      <div class="eyebrow crystal">VI. The Protagonists</div>
+      <h2 class="section-title">Three paths. <em>One convergence.</em></h2>
+      <div class="ornament"><span class="line"></span><svg><use href="#i-orn"/></svg><span class="line"></span></div>
+      <p class="lede" style="margin: 24px auto 0;">
+        They did not choose the current era. The current era chose them. A wanderer who listens for what the Empire
+        forbids anyone to hear. A soldier who holds the line so others don't have to. A ghost who has learned
+        that the most dangerous move is the one no one sees.
+      </p>
+    </div>
+
+    <div class="chars-grid">
+
+      <!-- Kira -->
+      <div class="char-card reveal reveal-d1">
+        <div class="char-card-img-wrap">
+          <img class="char-card-img" src="crystalus-extract/crystalus-beta-page/project/assets/char-kira.png" alt="Kira Veyruun — Saona Rogue" />
+        </div>
+        <div class="char-info">
+          <h3 class="char-name">Kira Veyruun</h3>
+          <span class="char-alias">Saona Rogue</span>
+          <blockquote class="char-quote">"Rhythm before wrath. Silence before sound. I move so the world can keep breathing."</blockquote>
+          <div class="char-stats">
+            <div class="char-stat"><span class="k">// ROLE</span><span class="v">Wanderer · Scout · Survivor</span></div>
+            <div class="char-stat"><span class="k">// ORIGIN</span><span class="v">Greywood March</span></div>
+            <div class="char-stat"><span class="k">// TECHNIQUE</span><span class="v">Demon Rush · Pulse Cant</span></div>
+            <div class="char-stat"><span class="k">// STATUS</span><span class="v">Watcher List · High Priority</span></div>
+          </div>
+          <span class="char-affil saona">Saona Order</span>
+        </div>
+      </div>
+
+      <!-- Bram -->
+      <div class="char-card reveal reveal-d2">
+        <div class="char-card-img-wrap">
+          <img class="char-card-img" src="crystalus-extract/crystalus-beta-page/project/assets/char-bram.png" alt="Bram Korr — Avalanche" />
+        </div>
+        <div class="char-info">
+          <h3 class="char-name">Bram Korr</h3>
+          <span class="char-alias">"Avalanche"</span>
+          <blockquote class="char-quote">"I don't fight for glory. I fight so they don't have to."</blockquote>
+          <div class="char-stats">
+            <div class="char-stat"><span class="k">// ROLE</span><span class="v">Frontline Breach</span></div>
+            <div class="char-stat"><span class="k">// ORIGIN</span><span class="v">District 18C</span></div>
+            <div class="char-stat"><span class="k">// SHARD TYPE</span><span class="v">Snow · Avalanche Class</span></div>
+            <div class="char-stat"><span class="k">// BLOODLINE</span><span class="v">March Descended</span></div>
+          </div>
+          <span class="char-affil justice">Justice Cell</span>
+        </div>
+      </div>
+
+      <!-- Lance -->
+      <div class="char-card reveal reveal-d3">
+        <div class="char-card-img-wrap">
+          <img class="char-card-img" src="crystalus-extract/crystalus-beta-page/project/assets/char-lance.png" alt="Lance Halden — Field Operative" />
+        </div>
+        <div class="char-info">
+          <h3 class="char-name">Lance Halden</h3>
+          <span class="char-alias">Field Operative</span>
+          <blockquote class="char-quote">"If I'm noticed, something already went wrong."</blockquote>
+          <div class="char-stats">
+            <div class="char-stat"><span class="k">// AGE</span><span class="v">17</span></div>
+            <div class="char-stat"><span class="k">// TECHNIQUE</span><span class="v">Hush Step · Subtle Movement</span></div>
+            <div class="char-stat"><span class="k">// PROFILE</span><span class="v">Observation · Positioning</span></div>
+            <div class="char-stat"><span class="k">// ARCHIVE</span><span class="v">JC-LNC-001</span></div>
+          </div>
+          <span class="char-affil field">Classification: Unstable</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION DIVIDER ===== -->
+<div class="sec-div"><div class="dl"></div><svg><use href="#i-orn"/></svg><div class="dl"></div></div>
+
+<!-- ===== M-PILOTS ===== -->
+<section id="mpilots">
+  <div class="wrap">
+    <div class="doctrines-head reveal">
+      <div class="eyebrow mpilot">VII. M-Pilots — The Suit Forge Doctrine</div>
+      <h2 class="section-title">Borrowed power, <em>built to last.</em></h2>
+      <div class="ornament"><span class="line"></span><svg><use href="#i-orn"/></svg><span class="line"></span></div>
+      <p class="lede" style="margin: 24px auto 0;">
+        Where bloodline failed, hardware answered. The M-Pilot discipline was forged in <strong style="color:var(--mpilot-bright);">House Varric Dane</strong> —
+        the first to argue that the Empire could not stake its survival on the lottery of who is born resonant.
+      </p>
+    </div>
+
+    <div class="mpilot-feature">
+      <div class="mpilot-figure reveal">
+        <div class="mpilot-figure-tag">SF-01 · STANDARD ISSUE</div>
+        <img src="crystalus-extract/crystalus-beta-page/project/assets/mpilot.png" alt="M-Pilot SentinelFrame — Standard Issue spec sheet" />
+        <div class="mpilot-figure-meta">
+          <span>// SUIT-FORGE SPEC SHEET</span>
+          <span class="sep">·</span><span>HOUSE VARRIC DANE</span>
+          <span class="sep">·</span><span class="restricted">IMPERIAL RESTRICTED</span>
+        </div>
+      </div>
+      <div class="mpilot-side reveal reveal-d2">
+        <div class="eyebrow mpilot">// THE SENTINELFRAME CLASS</div>
+        <h3 class="mpilot-h3">A suit that <em>borrows</em> what bloodlines were born with.</h3>
+        <p class="body-text" style="margin-top: 14px;">The SentinelFrame is the standard architecture for all current-line M-Pilot suits. A refined Crystalus core sits in a null-contact cell on the back; a Mako conversion matrix steps its resonance down into stable, phased energy; armor segments deploy in 0.8 to 1.2 seconds. The pilot does not wield. The suit does the wielding <em>for</em> them.</p>
+        <p class="body-text" style="margin-top: 14px;">The Forge calls it borrowed power. The bloodline Houses call it heresy. The Empire calls it the Harvest — and signs the next contract.</p>
+        <div class="mpilot-doctrine">
+          <div class="mpilot-doctrine-eyebrow">// VARRIC DANE DOCTRINE</div>
+          <p class="mpilot-doctrine-line">"Hardware wins. The future is not who you were born as — it's what you can be issued."</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mpilot-variants-head reveal">
+      <div class="eyebrow mpilot">// REGIONAL ITERATIONS</div>
+      <h3 class="mpilot-h3">One frame. <em>Four climates. Four contracts.</em></h3>
+      <p class="body-text" style="margin-top: 10px; max-width: 760px;">Varric Dane retains the patent. Local forges retain the climate. Every issue downstream of the standard exists because no one fights the same way in a frostline as they do in a dune basin.</p>
+    </div>
+
+    <div class="mpilot-variants">
+      <div class="variant variant--standard reveal reveal-d1">
+        <div class="variant-head"><div class="variant-model">SF-01</div><div class="variant-name">Standard Issue</div></div>
+        <ul class="variant-list">
+          <li>Balanced output for general operations</li>
+          <li>Standard capacity core cell</li>
+          <li>Common across the Imperial Military</li>
+        </ul>
+        <div class="variant-tag">CIVIC · GRID-WIDE</div>
+      </div>
+      <div class="variant variant--badlands reveal reveal-d2">
+        <div class="variant-head"><div class="variant-model">SF-BD</div><div class="variant-name">Badlands Issue</div></div>
+        <ul class="variant-list">
+          <li>Heat-resistant plating + sand filtration</li>
+          <li>Extended cooling and venting</li>
+          <li>Built for long-range convoy &amp; desert ops</li>
+        </ul>
+        <div class="variant-tag">FRONTIER · DUNE OPS</div>
+      </div>
+      <div class="variant variant--royal reveal reveal-d3">
+        <div class="variant-head"><div class="variant-model">SF-RY</div><div class="variant-name">Royal Issue</div></div>
+        <ul class="variant-list">
+          <li>Enhanced core stability &amp; output</li>
+          <li>Ionic shielding &amp; surge control</li>
+          <li>Issued to Royal Guard &amp; House retinues</li>
+        </ul>
+        <div class="variant-tag">RESTRICTED · HOUSE-CLEARED</div>
+      </div>
+      <div class="variant variant--village reveal reveal-d4">
+        <div class="variant-head"><div class="variant-model">SF-VL</div><div class="variant-name">Village Issue</div></div>
+        <ul class="variant-list">
+          <li>Simplified systems, lower capacity</li>
+          <li>Durable, easy to maintain</li>
+          <li>Issued to militia &amp; ward defense</li>
+        </ul>
+        <div class="variant-tag">CIVIC · WARD-LEVEL</div>
+      </div>
+    </div>
+
+    <div class="mpilot-training">
+      <div class="mpilot-training-copy reveal">
+        <div class="eyebrow mpilot">// TRAINING DIVISION</div>
+        <h3 class="mpilot-h3">Before the suit, <em>the vest.</em></h3>
+        <p class="body-text" style="margin-top: 14px;">Varric Dane does not only ship suits — it sets the curriculum. The Harmony Training Vest, the Resonance Baton, the non-lethal Stun Blaster, and the assisted Starter Backpack are all forge-issued, Harmony-certified, and Mint Glass-powered. K-Index assessment is built into the vest itself. The forge insists: <em>you don't certify a pilot. The cartridge certifies them for you.</em></p>
+        <div class="mpilot-stats">
+          <div class="signal"><div class="k">// FOUNDING HOUSE</div><div class="v">VARRIC DANE</div></div>
+          <div class="signal"><div class="k">// FRAME CLASS</div><div class="v">SENTINELFRAME</div></div>
+          <div class="signal"><div class="k">// REGIONAL ISSUES</div><div class="v">IV ACTIVE</div></div>
+          <div class="signal"><div class="k">// CORE GRADE</div><div class="v">REFINED · 93%+</div></div>
+        </div>
+      </div>
+      <div class="mpilot-training-fig reveal reveal-d2">
+        <div class="mpilot-figure-tag">TRIUMPH-APPROVED · TRAINING TIER</div>
+        <img src="crystalus-extract/crystalus-beta-page/project/assets/tournament-gear.png" alt="Meridian Triumph — Approved M-Pilot training equipment" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION DIVIDER ===== -->
+<div class="sec-div"><div class="dl"></div><svg><use href="#i-orn"/></svg><div class="dl"></div></div>
+
+<!-- ===== TRIUMPH ===== -->
+<section id="triumph">
+  <div class="wrap">
+    <div class="doctrines-head reveal">
+      <div class="eyebrow gold">VIII. Meridian Triumph</div>
+      <h2 class="section-title">Strength through <em>harmony.</em></h2>
+      <div class="ornament"><span class="line"></span><svg><use href="#i-orn"/></svg><span class="line"></span></div>
+      <p class="lede" style="margin: 24px auto 0;">
+        The Empire's grand civic spectacle — and its most efficient laundering operation for resonance data, sponsorship leverage,
+        and the quiet identification of new wielders. K-Levels are public. The standings are real. What happens after the trophy is awarded is not.
+      </p>
+    </div>
+
+    <div class="triumph-row" style="margin-top: 56px;">
+      <div class="triumph-img-frame reveal">
+        <img src="crystalus-extract/crystalus-beta-page/project/assets/triumph.png" alt="Meridian Triumph — Sector 18-C district qualifiers poster" />
+      </div>
+      <div class="reveal reveal-d2">
+        <div class="eyebrow gold">PROPAGANDA · CIVIC ORDER · SECTOR 18-C</div>
+        <h3 style="font-family: var(--f-display); font-size: 30px; color: var(--bone); margin-top: 12px; letter-spacing: 0.06em;">
+          Triumph is earned. Glory is yours.<br/>
+          <span style="color: var(--gold-bright);">The Empire watches.</span>
+        </h3>
+        <p class="body-text" style="margin-top: 18px;">Every sector runs qualifiers. Every qualifier ends in a K-Level reading. The Five Great Houses sponsor candidates, arbitrate brackets, and quietly take ownership of any wielder whose resonance signature catches the wrong eye. For the city, the Triumph is sport. For the Houses, it is selection.</p>
+        <div class="tri-callouts">
+          <div class="tri-call">
+            <div class="label">// VERIFIED PREDICTION SLATES</div>
+            <h5>Predict. Scratch. Support.</h5>
+            <p>Public slates. Imperial projection slates for sponsors. Sector standings drive the city's mood.</p>
+          </div>
+          <div class="tri-call">
+            <div class="label">// HARMONY OVERSIGHT</div>
+            <h5>Bracket. Audit. Disappear.</h5>
+            <p>Unregistered anomalies trigger Anomaly Response Cells. Evidence may be sealed under Harmony Black.</p>
+          </div>
+          <div class="tri-call">
+            <div class="label">// K-LEVEL CLASS</div>
+            <h5>K&nbsp;2.63 · Sponsor Eligible</h5>
+            <p>Stability rating: <strong style="color: var(--mint-bright)">controlled.</strong> Output: barrier / minor weld potential.</p>
+          </div>
+          <div class="tri-call">
+            <div class="label">// THE TELL</div>
+            <h5>Unstable spikes are reported.</h5>
+            <p>The Empire provides opportunity. Discipline earns advancement. Harmony ensures our safety.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arena + Prediction Slates -->
+    <div class="triumph-visuals">
+      <div class="triumph-panel reveal">
+        <img src="crystalus-extract/crystalus-beta-page/project/assets/triumph-arena.png" alt="Meridian Triumph — The Arena" />
+        <span class="tp-label">MERIDIAN TRIUMPH ARENA · IMPERIAL FACILITY</span>
+      </div>
+      <div class="triumph-panel reveal reveal-d2">
+        <img src="crystalus-extract/crystalus-beta-page/project/assets/prediction-slate.png" alt="Meridian Triumph — Verified Prediction Slates" />
+        <span class="tp-label">VERIFIED PREDICTION SLATES · CIVIC ARCHIVE</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION DIVIDER ===== -->
+<div class="sec-div"><div class="dl"></div><svg><use href="#i-orn"/></svg><div class="dl"></div></div>
+
+<!-- ===== HOUSES ===== -->
+<section id="houses">
+  <div class="wrap">
+    <div class="doctrines-head reveal">
+      <div class="eyebrow">IX. The Five Great Houses</div>
+      <h2 class="section-title">The throne is one chair. <em>Five hands hold it down.</em></h2>
+      <div class="ornament"><span class="line"></span><svg><use href="#i-orn"/></svg><span class="line"></span></div>
+    </div>
+    <div class="houses-strip">
+      <div class="house reveal reveal-d1">
+        <div class="crest"><svg width="56" height="56"><use href="#h-morvayne"/></svg></div>
+        <h4>Morvayne</h4><p class="motto">"Pressure shapes destiny."</p>
+        <div class="domain">// WATER RELIC · DARK DISCIPLINE</div>
+      </div>
+      <div class="house reveal reveal-d2">
+        <div class="crest"><svg width="56" height="56"><use href="#h-mavendor"/></svg></div>
+        <h4>Mavendor</h4><p class="motto">"Continuity is strength."</p>
+        <div class="domain">// PATRONAGE · IMPERIAL CONTINUITY</div>
+      </div>
+      <div class="house reveal reveal-d3">
+        <div class="crest"><svg width="56" height="56"><use href="#h-asterline"/></svg></div>
+        <h4>Asterline</h4><p class="motto">"Calibration creates truth."</p>
+        <div class="domain">// RESONANCE BUREAU · TELEMETRY</div>
+      </div>
+      <div class="house reveal reveal-d4">
+        <div class="crest"><svg width="56" height="56"><use href="#h-varric"/></svg></div>
+        <h4>Varric Dane</h4><p class="motto">"Precision defines dominance."</p>
+        <div class="domain">// SUIT-FORGE · MAKOPILOT CORPS</div>
+      </div>
+      <div class="house reveal reveal-d5">
+        <div class="crest"><svg width="56" height="56"><use href="#h-sablecross"/></svg></div>
+        <h4>Sablecross</h4><p class="motto">"Order through vigilance."</p>
+        <div class="domain">// RAIL GUARD · BORDER ENFORCEMENT</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION DIVIDER ===== -->
+<div class="sec-div"><div class="dl"></div><svg><use href="#i-orn"/></svg><div class="dl"></div></div>
+
+<!-- ===== THE BOOK ===== -->
+<section id="book">
+  <div class="wrap">
+    <div class="doctrines-head" style="text-align: left;">
+      <div class="eyebrow beta">X. The Pale Lycrux Legend</div>
+      <h2 class="section-title">Crystalus Beta — <em>coming soon.</em></h2>
+    </div>
+
+    <div class="book-section" style="margin-top: 56px;">
+      <div class="book-cover-wrap reveal">
+        <div class="book-covers-row">
+          <div class="cover-front">
+            <img src="crystalus-extract/crystalus-beta-page/project/assets/front-cover.png" alt="Crystalus Beta — The Pale Lycrux Legend front cover" />
+          </div>
+          <div class="cover-back">
+            <img src="crystalus-extract/crystalus-beta-page/project/assets/back-cover.png" alt="Crystalus Beta — back cover" />
+          </div>
+        </div>
+        <div class="coming-soon-stamp"><span>Coming Soon</span></div>
+      </div>
+
+      <div class="book-info reveal reveal-d2">
+        <div class="eyebrow beta">BOOK ONE · CL-001</div>
+        <h2 class="section-title" style="font-size: clamp(32px, 4vw, 52px); margin-top: 14px;">A novel by <em>JP Frost</em></h2>
+        <p class="body-text" style="margin-top: 24px; font-size: 18px;">
+          Beyond the walls of Meridian, the world hardens against itself. Inside them, a young wielder steps into a current that was never meant to be touched. The Empire wants what they've found. Ashlight wants it loose. The Saona want it stilled. The Broker wants to set the price.
+        </p>
+        <p class="body-text">And in the dark below the capital, something old, patient, and adaptive turns toward the light.</p>
+
+        <div class="release-block">
+          <div class="release-status">
+            <span class="release-dot"></span>
+            <span class="release-label">RELEASE STATUS</span>
+            <span class="release-val">FORTHCOMING</span>
+          </div>
+          <p class="release-copy">
+            The Archive is open. The book is not — yet. Join the dispatch list and be the first notified when <em>Crystalus Beta — The Pale Lycrux Legend</em> is released into circulation.
+          </p>
+          <form class="notify-form" onsubmit="event.preventDefault(); this.classList.add('sent');">
+            <input type="email" placeholder="your.signal@meridian.archive" aria-label="Email address" required />
+            <button type="submit" class="cta-pill">Notify Me</button>
+            <span class="sent-msg">&#10003; Signal received. Stand by.</span>
+          </form>
+        </div>
+
+        <p style="margin-top: 28px; font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.22em; color: var(--bone-faint); text-transform: uppercase;">
+          // MERIDIAN INSTITUTE EDITION · RELEASE WINDOW UNDISCLOSED · UNAUTHORIZED REPRODUCTION IS A HARMONY OFFENSE
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div>
+      <div class="brand-mark footer-brand" style="margin-bottom: 14px;">
+        <img src="crystalus-extract/crystalus-beta-page/project/assets/logo-transparent.png" alt="Crystalus Beta" />
+      </div>
+      <p style="color: var(--bone-dim); font-size: 15px; line-height: 1.6; max-width: 32ch;">
+        An ongoing dark-fantasy cycle by JP Frost. Book One of an eventual six. Watch the timeline. Read the doctrines. Trust no broker.
+      </p>
+      <div class="colophon">
+        <span>EST · 2026</span><span class="sep">|</span>
+        <span>MERIDIAN INSTITUTE</span><span class="sep">|</span>
+        <span>TIER III · OPEN ARCHIVE</span>
+      </div>
+    </div>
+    <div>
+      <h5>The Archive</h5>
+      <ul>
+        <li><a href="#world" class="proj-link">The World</a></li>
+        <li><a href="#doctrines" class="proj-link">Doctrines</a></li>
+        <li><a href="#exchange" class="proj-link">The Exchange</a></li>
+        <li><a href="#shards" class="proj-link">Shards &amp; Harness</a></li>
+        <li><a href="#characters" class="proj-link">Characters</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Civic Files</h5>
+      <ul>
+        <li><a href="#triumph" class="proj-link">Meridian Triumph</a></li>
+        <li><a href="#houses" class="proj-link">The Five Houses</a></li>
+        <li><a href="#book" class="proj-link">The Book</a></li>
+        <li><a href="#">Author · JP Frost</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Outside the Walls</h5>
+      <ul>
+        <li><a href="#">Newsletter</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Press &amp; Reviews</a></li>
+        <li><a href="#">Booksellers</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-archive">
+    <span>// ARCHIVE TIER · OPEN · ERA // BETA · CLASSIFICATION: UNSTABLE · ARCHIVE ID: CL-001</span>
+    <span>© 2026 JP FROST · ALL CRYSTALUS RIGHTS RESERVED</span>
+  </div>
+</footer>
+
+<script src="crystalus-extract/crystalus-beta-page/project/script.js"></script>
+<script>
+(function () {
+  // --- Topbar darkens on scroll ---
+  const topbar = document.getElementById('topbar');
+  const onScroll = () => {
+    topbar.classList.toggle('scrolled', window.scrollY > 48);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // --- Scroll-reveal ---
+  const revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (en.isIntersecting) {
+          en.target.classList.add('visible');
+          io.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => io.observe(el));
+  } else {
+    revealEls.forEach(el => el.classList.add('visible'));
+  }
+
+  // --- Hero parallax backdrop ---
+  const backdrop = document.querySelector('.hero-backdrop');
+  if (backdrop) {
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      backdrop.style.transform = `scale(1.06) translateY(${y * 0.18}px)`;
+    }, { passive: true });
+  }
+
+  // --- Section number update (Characters is now VI, bump mpilots etc.) ---
+  // Already handled in HTML numbering above.
+})();
+</script>
+</body>
+</html>
