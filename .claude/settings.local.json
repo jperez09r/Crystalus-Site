@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls \"C:\\\\Users\\\\jpere\\\\OneDrive\\\\Documents\\\\C-Beta\\\\Book 1\\\\Artifacts\\\\\")",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\jpere\\\\OneDrive\\\\Documents\\\\C-Beta\\\\Book 1\\\\Artifacts\" -Recurse | Where-Object {$_.LastWriteTime -gt \\(Get-Date\\).AddMinutes\\(-30\\)} | Select-Object FullName, LastWriteTime | Format-Table -AutoSize)",
+      "PowerShell(python --version)",
+      "PowerShell(node --version)",
+      "PowerShell(npx --version)",
+      "mcp__Claude_Preview__preview_start"
+    ]
+  }
+}
